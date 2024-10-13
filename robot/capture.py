@@ -19,3 +19,6 @@ while True:
     cv.imshow('frame', gray)
     if cv.waitKey(1) == ord('q'):
         break
+
+cap.release()
+cv.destroyAllWindows()
