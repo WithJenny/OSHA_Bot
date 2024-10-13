@@ -3,6 +3,7 @@ distlib==0.3.8
 filelock==3.16.1
 flake8==4.0.1
 mccabe==0.6.1
+numpy==2.1.2
 platformdirs==4.3.6
 pycodestyle==2.8.0
 pyflakes==2.4.0
