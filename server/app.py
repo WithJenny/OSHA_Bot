@@ -1,9 +1,10 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
 import requests
 from twelvelabs import TwelveLabs
-# from twelvelabs.models.task import Task
+
+# TODO  figure out how the robot will start
 
 app = Flask(__name__)
 
@@ -31,6 +32,20 @@ def show_homepage():
     """
 
 
+@app.route('/index')
+def get_index():
+
+    headers = {
+        "accept": "application/json",
+        "Content-Type": "application/json",
+        "x-api-key": API_KEY,
+    }
+
+    response = requests.get(f"{BASE_URL}/indexes/{index_id}", headers=headers)
+
+    return jsonify(response.json())
+
+
 @app.route('/indexes')
 def list_indexes():
 
@@ -47,21 +62,7 @@ def list_indexes():
         app.logger.info(f"Index id={index['_id']}, name={index['index_name']}")
         app.logger.info('=======================')
 
-    return response.text
-
-
-@app.route('/index')
-def get_index():
-
-    headers = {
-        "accept": "application/json",
-        "Content-Type": "application/json",
-        "x-api-key": API_KEY,
-    }
-
-    response = requests.get(f"{BASE_URL}/indexes/{index_id}", headers=headers)
-
-    return response.text
+    return jsonify(data)
 
 
 @app.route("/video/<video_id>")
@@ -80,18 +81,43 @@ def get_video(video_id):
 
     return response.text
 
-@app.route('/upload-video/<video_file>')
-def handle_upload_video(video_file):
+@app.route('/upload-video')
+def handle_upload_video():
 
     task = client.task.create(
         index_id=index_id,
-        file=video_file,
+        file='../videos/filename.mp4',
     )
-    app.logger.info(f"Task id={task.id}")
 
-    return """
-        robot started to record
-    """
+    app.logger.info(f"Task id={task.id}")
+    task.wait_for_done(sleep_interval=5)
+
+    return jsonify(msg="upload successful")
+
+@app.route('/query')
+def handle_check():
+    query_list = [
+        "person wearing glasses",
+        # "person wearing bunny ears"
+    ]
+
+    for query in query_list:
+        search_results = client.search.query(
+            index_id=index_id,
+            query_text=query,  # TODO update the query
+            options=["visual"]
+        )
+        app.logger.info('=======================')
+        app.logger.info(query)
+        scores = [
+          result.score for result in search_results.data if result.score > 65
+        ]
+        if len(scores) == 0:
+            return jsonify(msg="Fail")
+        app.logger.info(scores)
+        app.logger.info('=======================')
+
+    return jsonify(msg="Success")
 
 
 if __name__ == '__main__':
