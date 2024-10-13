@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, redirect
+from flask import Flask, jsonify, redirect, render_template
 from twelvelabs import TwelveLabs
 import cv2 as cv
 import requests
@@ -22,14 +22,7 @@ index_id = os.environ['INDEX_ID']
 @app.route('/')
 def show_homepage():
 
-    return """
-        <h1>OSHA_BOT<h1>
-        <p>
-            This is a temporary home page, we'll be using this as an api,
-            but for now it is a placeholder
-        <p>
-        <a href="http://localhost:5000/indexes">List Indexes</a>
-    """
+    return render_template('index.html')
 
 
 @app.route('/start')
