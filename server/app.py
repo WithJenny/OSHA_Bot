@@ -144,7 +144,7 @@ def handle_upload_video():
 
 @app.route('/query')
 def handle_check():
-    query_text = "person wearing bunny ears"
+    query_text = "face wearing a fask mask"
 
     search_results = client.search.query(
         index_id=index_id,
@@ -155,7 +155,7 @@ def handle_check():
     app.logger.info('=======================')
 
     scores = [
-      result.score for result in search_results.data if result.score > 65
+      result.score for result in search_results.data if result.score > 80
     ]
     app.logger.info(query_text)
     app.logger.info(scores)
