@@ -8,8 +8,12 @@ kit = ServoKit(channels=16)
 vertical_servo = kit.servo[1]
 horizontal_servo = kit.servo[0]
 
+REST_STATE_ANGLE = 120
 vertical_servo.actuation_range = 180  # Neutral position for vertical servo
 horizontal_servo.actuation_range = 180  # Neutral position for horizontal servo
+
+vertical_servo.angle = REST_STATE_ANGLE
+horizontal_servo.angle = 90
 
 
 def move_servos(servo_motor):
@@ -21,12 +25,15 @@ def move_servos(servo_motor):
         servo_motor.angle = 50
         time.sleep(0.25)
 
-    servo_motor.angle = 90
 
 def nod_yes():
     move_servos(vertical_servo)
+    vertical_servo.angle = REST_STATE_ANGLE
 
 
 def nod_no():
     move_servos(horizontal_servo)
+    horizontal_servo.angle = 90
 
+def thinking():
+    vertical_servo.set_angle(180)

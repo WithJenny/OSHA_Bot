@@ -4,7 +4,7 @@ from twelvelabs import TwelveLabs
 import cv2 as cv
 import requests
 import time
-from helpers import nod_yes, nod_no
+from helpers import nod_yes, nod_no, thinking
 
 app = Flask(__name__)
 
@@ -40,8 +40,11 @@ def start_robot():
     except Exception as e:
         app.logger.error(f'cant nod, {e}')
 
-    capture_duration = 10
+    capture_duration = 5
     cap = cv.VideoCapture(0)
+    app.logger.info('=======================')
+    app.logger.info('Video recording...')
+    app.logger.info('=======================')
 
 
     if not cap.isOpened():
@@ -73,6 +76,11 @@ def start_robot():
     app.logger.info('=======================')
     app.logger.info('Video Captured... going to upload now')
     app.logger.info('=======================')
+    try:
+        thinking()
+        app.logger.info('nodding')
+    except Exception as e:
+        app.logger.error(f'cant nod, {e}')
     return redirect('/upload-video')
 
 @app.route('/index')
