@@ -11,7 +11,7 @@ frame_height = int(cap.get(4))
    
 size = (frame_width, frame_height) 
 
-result = cv.VideoWriter('filename.mp4v',  
+result = cv.VideoWriter('filename.mp4',  
                          cv.VideoWriter_fourcc(*'mp4v'), 
                          10,size)
 while True:
@@ -23,13 +23,14 @@ while True:
         print("Can't receive frame (stream end?). Exiting ...")
         break
     # Our operations on the frame come here
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+   
     # Display the resulting frame
-    cv.imshow('frame', gray)
+    cv.imshow('frame', frame)
+    result.write(frame)
     if cv.waitKey(1) == ord('q'):
         break
 
 cap.release()
 cv.destroyAllWindows()
 
-print(result)
+
