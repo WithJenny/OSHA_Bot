@@ -1,10 +1,10 @@
 import os
-from flask import Flask, jsonify, redirect, url_for
+from flask import Flask, jsonify, redirect
 from twelvelabs import TwelveLabs
 import cv2 as cv
-import numpy as np
 import requests
 import time
+# from helpers import nod_yes, nod_no
 
 app = Flask(__name__)
 
@@ -30,6 +30,7 @@ def show_homepage():
         <p>
         <a href="http://localhost:5000/indexes">List Indexes</a>
     """
+
 
 @app.route('/start')
 def start_robot():
@@ -151,11 +152,22 @@ def handle_check():
         ]
         if len(scores) == 0:
             # TODO INSERT HEAD SHAKING FUNCTION HERE
+            try:
+                app.logger.info('nodding')
+                # nod_no()
+            except Exception as e:
+                app.logger.error(f'cant nod, {e}')
+                app.logger.error('cant shake')
 
             return jsonify(msg="Fail")
         app.logger.info(scores)
         app.logger.info('=======================')
         # TODO INSERT HEAD NODDING FUNCTION HERE
+        try:
+            # nod_yes()
+            app.logger.info('nodding')
+        except Exception as e:
+            app.logger.error(f'cant nod, {e}')
 
     return jsonify(msg="Success")
 
