@@ -6,9 +6,11 @@
 const char* ssid = "Duktop";
 const char* password = "leleponz";
 
+const uint ServerPort = 8080;
+WiFiServer Server(ServerPort);
+WiFiClient RemoteClient;
 
-// put function declarations here:
-int myFunction(int, int);
+void CheckForConnections();
 void setup()
 {
   // initialize LED digital pin as an output.
@@ -16,36 +18,53 @@ void setup()
 
   Serial.begin(115200);
     delay(1000);
-
+    WiFi.mode(WIFI_AP);
     WiFi.begin(ssid, password);
     Serial.println("\nConnecting");
 
     while(WiFi.status() != WL_CONNECTED){
-        Serial.print(WiFi.status());
+        Serial.print(".");
         delay(100);
     }
 
     Serial.println("\nConnected to the WiFi network");
     Serial.print("Local ESP32 IP: ");
     Serial.println(WiFi.localIP());
+    Server.begin();
 }
 
 void loop()
 {
-  // turn the LED on (HIGH is the voltage level)
-  digitalWrite(LED_BUILTIN, HIGH);
+ 
+  delay(10);
 
-  // wait for a second
-  delay(1000);
+  CheckForConnections();
 
-  // turn the LED off by making the voltage LOW
-  digitalWrite(LED_BUILTIN, LOW);
-
-   // wait for a second
-  delay(1000);
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void CheckForConnections()
+{
+  Serial.print("checking on ");
+  Serial.println(WiFi.localIP());
+  if (Server.hasClient())
+  {
+    // If we are already connected to another computer, 
+    // then reject the new connection. Otherwise accept
+    // the connection. 
+    if (RemoteClient.connected())
+    {
+      Serial.println("Connection rejected");
+      Server.available().stop();
+
+      while (RemoteClient.available()>0) {
+        char c = RemoteClient.read();
+        RemoteClient.write(c);
+      }
+    }
+    else
+    {
+      Serial.println("Connection accepted");
+      RemoteClient = Server.available();
+    }
+  }
 }
