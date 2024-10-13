@@ -1,8 +1,10 @@
 import os
-
-from flask import Flask, jsonify
-import requests
+from flask import Flask, jsonify, redirect, url_for
 from twelvelabs import TwelveLabs
+import cv2 as cv
+import numpy as np
+import requests
+import time
 
 # TODO  figure out how the robot will start
 
@@ -31,6 +33,41 @@ def show_homepage():
         <a href="http://localhost:5000/indexes">List Indexes</a>
     """
 
+@app.route('/start')
+def start_robot():
+
+    capture_duration = 10
+    cap = cv.VideoCapture(0)
+    if not cap.isOpened():
+        print("Cannot open camera")
+        exit()
+
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+
+    size = (frame_width, frame_height)
+
+    result = cv.VideoWriter(
+        '../videos/filename.mp4',
+        cv.VideoWriter_fourcc(*'mp4v'),
+        10,
+        size
+    )
+    start_time = time.time()
+    while int(time.time() - start_time) < capture_duration:
+        # Capture frame-by-frame
+        ret, frame = cap.read()
+
+        # Display the resulting frame
+        result.write(frame)
+        if cv.waitKey(1) == ord('q'):
+            break
+
+        # return redirect here
+    app.logger.info('=======================')
+    app.logger.info('Video Captured... going to upload now')
+    app.logger.info('=======================')
+    return redirect(url_for('handle_upload_video'))
 
 @app.route('/index')
 def get_index():
@@ -81,9 +118,10 @@ def get_video(video_id):
 
     return response.text
 
+
 @app.route('/upload-video')
 def handle_upload_video():
-
+    """Upload video to twelvelabs index."""
     task = client.task.create(
         index_id=index_id,
         file='../videos/filename.mp4',
@@ -92,7 +130,8 @@ def handle_upload_video():
     app.logger.info(f"Task id={task.id}")
     task.wait_for_done(sleep_interval=5)
 
-    return jsonify(msg="upload successful")
+    return redirect(url_for('handle_check'))
+
 
 @app.route('/query')
 def handle_check():
@@ -113,9 +152,13 @@ def handle_check():
           result.score for result in search_results.data if result.score > 65
         ]
         if len(scores) == 0:
+            # TODO INSERT HEAD SHAKING FUNCTION HERE
+
             return jsonify(msg="Fail")
         app.logger.info(scores)
         app.logger.info('=======================')
+        
+        # TODO INSERT HEAD NODDING FUNCTION HERE
 
     return jsonify(msg="Success")
 
