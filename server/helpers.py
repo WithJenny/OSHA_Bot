@@ -8,8 +8,8 @@ kit = ServoKit(channels=16)
 vertical_servo = kit.servo[0]
 horizontal_servo = kit.servo[1]
 
-vertical_servo.actuation_range = 90  # Neutral position for vertical servo
-horizontal_servo.actuation_range = 90  # Neutral position for horizontal servo
+vertical_servo.actuation_range = 180  # Neutral position for vertical servo
+horizontal_servo.actuation_range = 180  # Neutral position for horizontal servo
 
 
 def move_servos(servo_motor):

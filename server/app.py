@@ -4,7 +4,7 @@ from twelvelabs import TwelveLabs
 import cv2 as cv
 import requests
 import time
-# from helpers import nod_yes, nod_no
+from helpers import nod_yes, nod_no
 
 app = Flask(__name__)
 
@@ -154,7 +154,7 @@ def handle_check():
             # TODO INSERT HEAD SHAKING FUNCTION HERE
             try:
                 app.logger.info('nodding')
-                # nod_no()
+                nod_no()
             except Exception as e:
                 app.logger.error(f'cant nod, {e}')
                 app.logger.error('cant shake')
@@ -164,7 +164,7 @@ def handle_check():
         app.logger.info('=======================')
         # TODO INSERT HEAD NODDING FUNCTION HERE
         try:
-            # nod_yes()
+            nod_yes()
             app.logger.info('nodding')
         except Exception as e:
             app.logger.error(f'cant nod, {e}')
