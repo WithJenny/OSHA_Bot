@@ -36,4 +36,4 @@ def nod_no():
     horizontal_servo.angle = 90
 
 def thinking():
-    vertical_servo.set_angle(180)
+    vertical_servo.angle = 180
