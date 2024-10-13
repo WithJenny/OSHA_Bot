@@ -6,8 +6,6 @@ import numpy as np
 import requests
 import time
 
-# TODO  figure out how the robot will start
-
 app = Flask(__name__)
 
 API_KEY = os.environ['TWELVE_LABS_API_KEY']
@@ -67,7 +65,7 @@ def start_robot():
     app.logger.info('=======================')
     app.logger.info('Video Captured... going to upload now')
     app.logger.info('=======================')
-    return redirect(url_for('handle_upload_video'))
+    return redirect('/upload-video')
 
 @app.route('/index')
 def get_index():
@@ -130,7 +128,7 @@ def handle_upload_video():
     app.logger.info(f"Task id={task.id}")
     task.wait_for_done(sleep_interval=5)
 
-    return redirect(url_for('handle_check'))
+    return redirect('/query')
 
 
 @app.route('/query')
@@ -157,7 +155,6 @@ def handle_check():
             return jsonify(msg="Fail")
         app.logger.info(scores)
         app.logger.info('=======================')
-        
         # TODO INSERT HEAD NODDING FUNCTION HERE
 
     return jsonify(msg="Success")
