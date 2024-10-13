@@ -1,0 +1,11 @@
+autopep8==1.6.0
+distlib==0.3.8
+filelock==3.16.1
+flake8==4.0.1
+mccabe==0.6.1
+platformdirs==4.3.6
+pycodestyle==2.8.0
+pyflakes==2.4.0
+six==1.16.0
+toml==0.10.2
+virtualenv==20.26.6
