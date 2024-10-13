@@ -39,7 +39,6 @@ def start_robot():
     app.logger.info('Video recording...')
     app.logger.info('=======================')
 
-
     if not cap.isOpened():
         print("Cannot open camera")
         exit()
@@ -77,6 +76,7 @@ def start_robot():
         app.logger.error(f'cant nod, {e}')
 
     return redirect('/upload-video')
+
 
 @app.route('/index')
 def get_index():
@@ -151,36 +151,32 @@ def handle_check():
         query_text=query_text,
         options=["visual"]
     )
+
     app.logger.info('=======================')
-    app.logger.info(query_text)
 
     scores = [
       result.score for result in search_results.data if result.score > 65
     ]
-
-
-    app.logger.info(query_text, scores)
+    app.logger.info(query_text)
+    app.logger.info(scores)
     app.logger.info('=======================')
 
     if len(scores) == 0:
         # TODO INSERT HEAD SHAKING FUNCTION HERE
         try:
-            app.logger.info('nodding')
+            app.logger.info('nodding no')
             nod_no()
         except Exception as e:
             app.logger.error(f'cant nod, {e}')
             app.logger.error('cant shake')
 
-        app.logger.info(scores)
         app.logger.info('=======================')
 
         return jsonify(msg="Fail")
 
-
-        # TODO INSERT HEAD NODDING FUNCTION HERE
     try:
         nod_yes()
-        app.logger.info('nodding')
+        app.logger.info('nodding yes')
     except Exception as e:
         app.logger.error(f'cant nod, {e}')
 
