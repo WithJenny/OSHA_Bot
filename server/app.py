@@ -152,13 +152,14 @@ def handle_check():
         options=["visual"]
     )
     app.logger.info('=======================')
-    app.logger.info(query)
+    app.logger.info(query_text)
 
     scores = [
       result.score for result in search_results.data if result.score > 65
     ]
 
-    app.logger.info(query, scores)
+
+    app.logger.info(query_text, scores)
     app.logger.info('=======================')
 
     if len(scores) == 0:
@@ -183,7 +184,7 @@ def handle_check():
     except Exception as e:
         app.logger.error(f'cant nod, {e}')
 
-        return jsonify(msg="Success")
+    return jsonify(msg="Success")
 
 
 if __name__ == '__main__':
