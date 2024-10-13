@@ -8,7 +8,7 @@ if not cap.isOpened():
 
 result = cv.VideoWriter('filename.avi',  
                          cv.VideoWriter_fourcc(*'mp4v'), 
-                         10, size)
+                         10)
 while True:
     # Capture frame-by-frame
     ret, frame = cap.read()
