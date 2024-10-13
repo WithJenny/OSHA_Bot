@@ -1,11 +1,8 @@
 #import numpy as np
 import cv2 as cv
-<<<<<<< Updated upstream
 import os
- 
-=======
+import numpy as np
 
->>>>>>> Stashed changes
 cap = cv.VideoCapture(0)
 if not cap.isOpened():
     print("Cannot open camera")
