@@ -34,9 +34,16 @@ def show_homepage():
 
 @app.route('/start')
 def start_robot():
+    try:
+        nod_yes()
+        app.logger.info('nodding')
+    except Exception as e:
+        app.logger.error(f'cant nod, {e}')
 
     capture_duration = 10
     cap = cv.VideoCapture(0)
+
+
     if not cap.isOpened():
         print("Cannot open camera")
         exit()
