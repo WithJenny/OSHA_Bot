@@ -6,7 +6,7 @@ if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
-result = cv2.VideoWriter('filename.avi',  
+result = cv.VideoWriter('filename.avi',  
                          cv2.VideoWriter_fourcc(*'mp4v'), 
                          10, size)
 while True:
