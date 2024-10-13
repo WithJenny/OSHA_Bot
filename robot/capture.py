@@ -11,7 +11,7 @@ frame_height = int(cap.get(4))
    
 size = (frame_width, frame_height) 
 
-result = cv.VideoWriter('filename.avi',  
+result = cv.VideoWriter('filename.mp4v',  
                          cv.VideoWriter_fourcc(*'mp4v'), 
                          10,size)
 while True:
