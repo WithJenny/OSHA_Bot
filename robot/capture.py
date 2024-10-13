@@ -6,9 +6,14 @@ if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
+frame_width = int(cap.get(3)) 
+frame_height = int(cap.get(4)) 
+   
+size = (frame_width, frame_height) 
+
 result = cv.VideoWriter('filename.avi',  
                          cv.VideoWriter_fourcc(*'mp4v'), 
-                         10)
+                         10,size)
 while True:
     # Capture frame-by-frame
     ret, frame = cap.read()
