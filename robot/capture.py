@@ -5,6 +5,10 @@ cap = cv.VideoCapture(0)
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
+
+result = cv2.VideoWriter('filename.avi',  
+                         cv2.VideoWriter_fourcc(*'mp4v'), 
+                         10, size)
 while True:
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -22,3 +26,5 @@ while True:
 
 cap.release()
 cv.destroyAllWindows()
+
+print(result)
