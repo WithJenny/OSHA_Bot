@@ -78,9 +78,11 @@ def start_robot():
     app.logger.info('=======================')
     try:
         thinking()
+        time.sleep(2)
         app.logger.info('nodding')
     except Exception as e:
         app.logger.error(f'cant nod, {e}')
+
     return redirect('/upload-video')
 
 @app.route('/index')
@@ -149,42 +151,46 @@ def handle_upload_video():
 
 @app.route('/query')
 def handle_check():
-    query_list = [
-        "person wearing glasses",
-        # "person wearing bunny ears"
+    query_text = "person wearing bunny ears"
+
+    search_results = client.search.query(
+        index_id=index_id,
+        query_text=query_text,
+        options=["visual"]
+    )
+    app.logger.info('=======================')
+    app.logger.info(query)
+
+    scores = [
+      result.score for result in search_results.data if result.score > 65
     ]
 
-    for query in query_list:
-        search_results = client.search.query(
-            index_id=index_id,
-            query_text=query,  # TODO update the query
-            options=["visual"]
-        )
-        app.logger.info('=======================')
-        app.logger.info(query)
-        scores = [
-          result.score for result in search_results.data if result.score > 65
-        ]
-        if len(scores) == 0:
-            # TODO INSERT HEAD SHAKING FUNCTION HERE
-            try:
-                app.logger.info('nodding')
-                nod_no()
-            except Exception as e:
-                app.logger.error(f'cant nod, {e}')
-                app.logger.error('cant shake')
+    app.logger.info(query, scores)
+    app.logger.info('=======================')
 
-            return jsonify(msg="Fail")
-        app.logger.info(scores)
-        app.logger.info('=======================')
-        # TODO INSERT HEAD NODDING FUNCTION HERE
+    if len(scores) == 0:
+        # TODO INSERT HEAD SHAKING FUNCTION HERE
         try:
-            nod_yes()
             app.logger.info('nodding')
+            nod_no()
         except Exception as e:
             app.logger.error(f'cant nod, {e}')
+            app.logger.error('cant shake')
 
-    return jsonify(msg="Success")
+        app.logger.info(scores)
+        app.logger.info('=======================')
+
+        return jsonify(msg="Fail")
+
+
+        # TODO INSERT HEAD NODDING FUNCTION HERE
+    try:
+        nod_yes()
+        app.logger.info('nodding')
+    except Exception as e:
+        app.logger.error(f'cant nod, {e}')
+
+        return jsonify(msg="Success")
 
 
 if __name__ == '__main__':

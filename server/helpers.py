@@ -16,6 +16,7 @@ vertical_servo.angle = REST_STATE_ANGLE
 horizontal_servo.angle = 90
 
 
+
 def move_servos(servo_motor):
     for i in range(0,3):
         servo_motor.angle = 150
@@ -32,8 +33,12 @@ def nod_yes():
 
 
 def nod_no():
+    vertical_servo.angle = REST_STATE_ANGLE
+    time.sleep(.25)
     move_servos(horizontal_servo)
     horizontal_servo.angle = 90
 
 def thinking():
     vertical_servo.angle = 180
+
+
