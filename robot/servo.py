@@ -5,10 +5,28 @@ from adafruit_servokit import ServoKit
 # 8 for FeatherWing, 16 for Shield/HAT/Bonnet.
 kit = ServoKit(channels=16)
 
-kit.servo[0].angle = 90
+vertical_servo = kit.servo[0]
+horizontal_servo = kit.servo[1]
 
-time.sleep(1)
+vertical_servo.actuation_range = 90  # Neutral position for vertical servo
+horizontal_servo.actuation_rage = 90 # Neutral position for horizontal servo
+
+def move_servos(servo_motor):
+    for i in range(0,3):
+        servo_motor.angle = 150
+        time.sleep(1)
+        servo_motor.angle = 0
+        time.sleep(1)
+        servo_motor.angle = 50
+        time.sleep(1)
 
 
-kit.servo[1].angle = 90
-time.sleep(1)
+def nod_yes():
+    move_servos(vertical_servo)
+
+def nod_no():
+    move_servos(horizontal_servo)
+
+
+
+
