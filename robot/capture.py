@@ -7,7 +7,7 @@ if not cap.isOpened():
     exit()
 
 result = cv.VideoWriter('filename.avi',  
-                         cv2.VideoWriter_fourcc(*'mp4v'), 
+                         cv.VideoWriter_fourcc(*'mp4v'), 
                          10, size)
 while True:
     # Capture frame-by-frame
